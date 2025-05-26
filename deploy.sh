@@ -1,6 +1,20 @@
 #!/bin/bash
 
-# Read sourcetype and index from inputs.conf
+REPO_NAME="Harness_Automation"
+
+# Clean up existing repo if present
+if [ -d "$REPO_NAME" ]; then
+  echo "🧹 Removing existing repo folder..."
+  rm -rf "$REPO_NAME"
+fi
+
+# Clone the repo fresh
+echo "📥 Cloning Git repo..."
+git clone https://github.com/MiddlewareTalent/Harness_Automation.git
+
+cd "$REPO_NAME" || { echo "❌ Failed to enter $REPO_NAME"; exit 1; }
+
+# Extract config values
 SOURCETYPE=$(grep 'sourcetype' configs/inputs.conf | awk -F= '{print $2}' | xargs)
 INDEX=$(grep 'index' configs/inputs.conf | awk -F= '{print $2}' | xargs)
 
@@ -11,13 +25,13 @@ echo "Sending logs to: $SPLUNK_HEC_URL"
 echo "Using sourcetype: $SOURCETYPE"
 echo "Using index: $INDEX"
 
-# Check if logs directory exists
+# Ensure logs folder exists
 if [ ! -d logs ]; then
   echo "🚫 'logs' directory not found!"
   exit 1
 fi
 
-# Loop through all .log files in logs/ folder
+# Loop through all log files
 for logfile in logs/*.log; do
   echo "📤 Sending $logfile to Splunk..."
   while IFS= read -r line; do
