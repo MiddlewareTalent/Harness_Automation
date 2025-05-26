@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Get Splunk HEC URL and Token from Harness secrets
+# shellcheck disable=SC1073
+# shellcheck disable=SC1072
 SPLUNK_URL=<+secrets.getValue("splunk_url")>
 HEC_TOKEN=<+secrets.getValue("splunk_hec_token")>
 
