@@ -1,44 +1,27 @@
 #!/bin/bash
 
-REPO_NAME="Harness_Automation"
+# Get Splunk HEC URL and Token from Harness secrets
+SPLUNK_URL=<+secrets.getValue("splunk_url")>
+HEC_TOKEN=<+secrets.getValue("splunk_hec_token")>
 
-# Clean up existing repo if present
-if [ -d "$REPO_NAME" ]; then
-  echo "🧹 Removing existing repo folder..."
-  rm -rf "$REPO_NAME"
-fi
-
-# Clone the repo fresh
-echo "📥 Cloning Git repo..."
-git clone https://github.com/MiddlewareTalent/Harness_Automation.git
-
-cd "$REPO_NAME" || { echo "❌ Failed to enter $REPO_NAME"; exit 1; }
-
-# Extract config values
+# Read sourcetype and index from inputs.conf
 SOURCETYPE=$(grep 'sourcetype' configs/inputs.conf | awk -F= '{print $2}' | xargs)
 INDEX=$(grep 'index' configs/inputs.conf | awk -F= '{print $2}' | xargs)
 
-SPLUNK_HEC_URL="$SPLUNK_URL"
-SPLUNK_TOKEN="$SPLUNK_TOKEN"
-
-echo "Sending logs to: $SPLUNK_HEC_URL"
+echo "Sending logs to: $SPLUNK_URL"
 echo "Using sourcetype: $SOURCETYPE"
 echo "Using index: $INDEX"
 
-# Ensure logs folder exists
-if [ ! -d logs ]; then
-  echo "🚫 'logs' directory not found!"
-  exit 1
-fi
-
-# Loop through all log files
+# Loop through each .log file inside logs/ folder
 for logfile in logs/*.log; do
   echo "📤 Sending $logfile to Splunk..."
   while IFS= read -r line; do
-    curl -s -k "$SPLUNK_HEC_URL/services/collector" \
-      -H "Authorization: Splunk $SPLUNK_TOKEN" \
+    curl --silent --output /dev/null \
+      -k "$SPLUNK_URL/services/collector" \
+      -H "Authorization: Splunk $HEC_TOKEN" \
       -H "Content-Type: application/json" \
-      -d "{\"event\": \"$line\", \"sourcetype\": \"$SOURCETYPE\", \"index\": \"$INDEX\"}"
+      -d "{\"event\": \"$line\", \"sourcetype\": \"$SOURCETYPE\", \"index\": \"$INDEX\"}" \
+      --write-out '{"text":"Success","code":0}\n'
   done < "$logfile"
 done
 
