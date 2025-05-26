@@ -18,4 +18,4 @@ while IFS= read -r line; do
     -d "{\"event\": \"$line\", \"sourcetype\": \"$SOURCETYPE\", \"index\": \"$INDEX\"}"
 done < log.txt
 
-echo "Deployment finished!"
+echo "Deployment finished!!"
