@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Use Harness secrets
-SPLUNK_URL=<+secrets.getValue("splunk_url")>
-HEC_TOKEN=<+secrets.getValue("splunk_hec_token")>
+# Use environment variables passed by Harness
+SPLUNK_URL="$SPLUNK_URL"
+HEC_TOKEN="$HEC_TOKEN"
 
 # Read sourcetype and index from inputs.conf
 SOURCETYPE=$(grep 'sourcetype' configs/inputs.conf | awk -F= '{print $2}' | xargs)
@@ -12,7 +12,6 @@ echo "Sending logs to: $SPLUNK_URL"
 echo "Using sourcetype: $SOURCETYPE"
 echo "Using index: $INDEX"
 
-# Loop through each .log file inside logs/ folder
 for logfile in logs/*.log; do
   echo "📤 Sending $logfile to Splunk..."
   while IFS= read -r line; do
