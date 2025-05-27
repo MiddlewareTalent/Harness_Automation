@@ -4,7 +4,7 @@ SPLUNK_URL="https://prd-p-xugh6.splunkcloud.com"
 HEC_TOKEN="a6a4f859-d3ee-4331-92ac-02b9bd9ea9b7"
 
 # Define fixed values known to work
-SOURCETYPE="Raviteja"
+SOURCETYPE="RCB"
 INDEX="harness_demo"
 
 echo "Sending logs to: $SPLUNK_URL"
