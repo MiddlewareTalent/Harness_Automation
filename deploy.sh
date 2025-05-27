@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Use environment variables passed by Harness
-SPLUNK_URL="$SPLUNK_URL"
-HEC_TOKEN="$HEC_TOKEN"
+SPLUNK_URL="https://prd-p-xugh6.splunkcloud.com"
+HEC_TOKEN="a6a4f859-d3ee-4331-92ac-02b9bd9ea9b7"
 
 # Read sourcetype and index from inputs.conf
 SOURCETYPE=$(grep 'sourcetype' configs/inputs.conf | awk -F= '{print $2}' | xargs)
