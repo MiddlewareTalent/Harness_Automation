@@ -1,12 +1,11 @@
 #!/bin/bash
 
-# Use environment variables passed by Harness
 SPLUNK_URL="https://prd-p-xugh6.splunkcloud.com"
 HEC_TOKEN="a6a4f859-d3ee-4331-92ac-02b9bd9ea9b7"
 
-# Read sourcetype and index from inputs.conf
-SOURCETYPE=$(grep 'sourcetype' configs/inputs.conf | awk -F= '{print $2}' | xargs)
-INDEX=$(grep 'index' configs/inputs.conf | awk -F= '{print $2}' | xargs)
+# Define fixed values known to work
+SOURCETYPE="Raviteja"
+INDEX="harness_demo"
 
 echo "Sending logs to: $SPLUNK_URL"
 echo "Using sourcetype: $SOURCETYPE"
