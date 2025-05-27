@@ -5,8 +5,8 @@ SPLUNK_URL="https://5f86-136-232-205-158.ngrok-free.app"
 HEC_TOKEN="cbaab027-b57d-44aa-ad27-db2e393501b9"
 
 # Specify the log file and sourcetype directly here
-LOGFILE="logs/transaction.log"         # ✅ Change this to your desired log file
-SOURCETYPE="transaction_logs"               # ✅ Change this to your desired sourcetype
+LOGFILE="logs/app.log"         # ✅ Change this to your desired log file
+SOURCETYPE="IPL"               # ✅ Change this to your desired sourcetype
 INDEX="harness_splunk_git"           # ✅ Change this to your desired index
 
 # Debug info
