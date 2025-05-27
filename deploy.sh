@@ -5,7 +5,7 @@ SPLUNK_URL="https://prd-p-xugh6.splunkcloud.com"
 HEC_TOKEN="a6a4f859-d3ee-4331-92ac-02b9bd9ea9b7"
 
 # Set fixed sourcetype and index
-SOURCETYPE="RCBB"
+SOURCETYPE="IPL"
 INDEX="harness_demo"
 
 # Echo for debugging
