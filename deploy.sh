@@ -7,7 +7,7 @@ HEC_TOKEN="cbaab027-b57d-44aa-ad27-db2e393501b9"
 # Specify the log file and sourcetype directly here
 LOGFILE="logs/app.log"         # ✅ Change this to your desired log file
 SOURCETYPE="IPL"               # ✅ Change this to your desired sourcetype
-INDEX="harness_splunk_git"           # ✅ Change this to your desired index
+INDEX="harness_splunk_git"     # ✅ Change this to your desired index
 
 # Debug info
 echo "Sending logs to: $SPLUNK_URL"
