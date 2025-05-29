@@ -5,7 +5,7 @@ HEC_TOKEN="cbaab027-b57d-44aa-ad27-db2e393501b9"
 
 # Specify the log file and source ltype directly here
 LOGFILE="logs/app.log"         # ✅ Change this to your desired log file
-SOURCETYPE="IPLL"               # ✅ Change this to your desired source type
+SOURCETYPE="demo"               # ✅ Change this to your desired source type
 INDEX="harness_splunk_git"     # ✅ Change this to your desired index
 
 # Debug info
