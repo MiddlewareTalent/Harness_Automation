@@ -1,12 +1,12 @@
 #!/bin/bash
 # Hardcoded Splunk HEC values
-SPLUNK_URL="https://b666-27-4-57-81.ngrok-free.app"
-HEC_TOKEN="cbaab027-b57d-44aa-ad27-db2e393501b9"
+SPLUNK_URL="https://e4d3-136-232-205-158.ngrok-free.app"
+HEC_TOKEN="4f68e260-3555-46c1-84b3-bfecb678d31e"
 
 # Specify the log file and source ltype directly here
-LOGFILE="logs/app.log"         # ✅ Change this to your desired log file
+LOGFILE="logs/errors.log"         # ✅ Change this to your desired log file
 SOURCETYPE="error_logs"               # ✅ Change this to your desired source type
-INDEX="harness_splunk_git"     # ✅ Change this to your desired index
+INDEX="harness_demo"     # ✅ Change this to your desired index
 
 # Debug info
 echo "Sending logs to: $SPLUNK_URL"
