@@ -6,7 +6,7 @@ HEC_TOKEN="4f68e260-3555-46c1-84b3-bfecb678d31e"
 # Specify the log file and source ltype directly here
 LOGFILE="logs/errors.log"         # ✅ Change this to your desired log file
 SOURCETYPE="error_logs"           # ✅ Change this to your desired source type
-INDEX="harness_demo"     # ✅ Change this to your desired index
+INDEX="harness_demo"              # ✅ Change this to your desired index
 
 # Debug info
 echo "Sending logs to: $SPLUNK_URL"
