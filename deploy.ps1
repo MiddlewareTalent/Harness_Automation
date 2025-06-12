@@ -26,5 +26,5 @@ if ($logLine -match '^\[monitor://(.+)\]') {
     exit 1
 }
 
-# Step 4: Restart Splunk UF
+# Step 4: Restart Splunk UFF
 & "$ufLocalPath\bin\splunk.exe" restart
