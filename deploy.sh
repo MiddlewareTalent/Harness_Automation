@@ -1,33 +1,21 @@
-#!/bin/bash
-# Hardcoded Splunk HEC values
-SPLUNK_URL="https://e4d3-136-232-205-158.ngrok-free.app"
-HEC_TOKEN="4f68e260-3555-46c1-84b3-bfecb678d31e"
+# Path to Splunk UF and local log
+$ufLocalPath = "C:\Program Files\SplunkUniversalForwarder"
+$logPath = "C:\Splunkuf_logs_demo\app.log"
+$inputsConfPath = "$ufLocalPath\etc\system\local\inputs.conf"
 
-# Specify the log file and source ltype directly here
-LOGFILE="logs/errors.log"         # ✅ Change this to your desired log file
-SOURCETYPE="error_logs"           # ✅ Change this to your desired source type
-INDEX="harness_demo"              # ✅ Change this to your desired index
+# Copy inputs.conf to Splunk UF
+Copy-Item ".\inputs.conf" -Destination $inputsConfPath -Force
 
-# Debug info
-echo "Sending logs to: $SPLUNK_URL"
-echo "Using sourcetype: $SOURCETYPE"
-echo "Using index: $INDEX"
-echo "Log file: $LOGFILE"
+# Ensure log file exists
+# shellcheck disable=SC1073
+# shellcheck disable=SC1065
+# shellcheck disable=SC1081
+# shellcheck disable=SC1072
+# shellcheck disable=SC1064
+If (-Not (Test-Path $logPath)) {
+    New-Item -ItemType File -Path $logPath -Force | Out-Null
+    Add-Content -Path $logPath -Value "Log file initialized at $(Get-Date)"
+}
 
-# Validate the log file exists
-if [[ -f "$LOGFILE" ]]; then
-  echo "📤 Sending $LOGFILE to Splunk..."
-  while IFS= read -r line; do
-    curl --silent --output /dev/null \
-      -k "$SPLUNK_URL/services/collector" \
-      -H "Authorization: Splunk $HEC_TOKEN" \
-      -H "Content-Type: application/json" \
-      -d "{\"event\": \"$line\", \"sourcetype\": \"$SOURCETYPE\", \"index\": \"$INDEX\"}" \
-      --write-out '{"text":"Success","code":0}\n'
-  done < "$LOGFILE"
-else
-  echo "❌ Log file not found: $LOGFILE"
-  exit 1
-fi
-
-echo "✅ Deployment finished!"
+# Restart Splunk UF
+& "$ufLocalPath\bin\splunk.exe" restart
