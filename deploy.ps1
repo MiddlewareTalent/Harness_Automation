@@ -2,18 +2,29 @@
 
 $ErrorActionPreference = 'Stop'
 
+# Splunk UF install location
 $ufLocalPath = "C:\Program Files\SplunkUniversalForwarder"
-$logPath = "C:\Splunkuf_logs_demo\app.log"
 $inputsConfPath = "$ufLocalPath\etc\system\local\inputs.conf"
 
-# Copy inputs.conf to UF config
+# Step 1: Copy inputs.conf to Splunk UF config directory
 Copy-Item ".\inputs.conf" -Destination $inputsConfPath -Force
 
-# Ensure log file exists
-If (-Not (Test-Path $logPath)) {
-    New-Item -ItemType File -Path $logPath -Force | Out-Null
-    Add-Content -Path $logPath -Value "Log initialized at $(Get-Date)"
+# Step 2: Parse log path from inputs.conf
+$inputsConf = Get-Content ".\inputs.conf"
+$logLine = $inputsConf | Where-Object { $_ -like '[monitor://*' }
+
+if ($logLine -match '\[monitor://(.*)\]') {
+    $logPath = $matches[1]
+
+    # Step 3: Ensure the log file exists
+    if (-Not (Test-Path $logPath)) {
+        New-Item -ItemType File -Path $logPath -Force | Out-Null
+        Add-Content -Path $logPath -Value "Log initialized at $(Get-Date)"
+    }
+} else {
+    Write-Error "No valid monitor stanza found in inputs.conf"
+    exit 1
 }
 
-# Restart Splunk UF
+# Step 4: Restart Splunk UF
 & "$ufLocalPath\bin\splunk.exe" restart
