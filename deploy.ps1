@@ -11,10 +11,10 @@ Copy-Item ".\inputs.conf" -Destination $inputsConfPath -Force
 
 # Step 2: Parse log path from inputs.conf
 $inputsConf = Get-Content ".\inputs.conf"
-$logLine = $inputsConf | Where-Object { $_ -like '[monitor://*' }
+$logLine = $inputsConf | Where-Object { $_ -match '^\[monitor://(.+)\]' }
 
-if ($logLine -match '\[monitor://(.*)\]') {
-    $logPath = $matches[1]
+if ($logLine -match '^\[monitor://(.+)\]') {
+    $logPath = $matches[1].Trim()
 
     # Step 3: Ensure the log file exists
     if (-Not (Test-Path $logPath)) {
@@ -22,7 +22,7 @@ if ($logLine -match '\[monitor://(.*)\]') {
         Add-Content -Path $logPath -Value "Log initialized at $(Get-Date)"
     }
 } else {
-    Write-Error "No valid monitor stanza found in inputs.conf"
+    Write-Error "No valid [monitor://...] stanza found in inputs.conf"
     exit 1
 }
 
