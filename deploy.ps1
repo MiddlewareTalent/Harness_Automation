@@ -1,30 +1,31 @@
-# PowerShell script to deploy inputs.conf and restart Splunk UF
-
 $ErrorActionPreference = 'Stop'
 
-# Splunk UF install location
 $ufLocalPath = "C:\Program Files\SplunkUniversalForwarder"
 $inputsConfPath = "$ufLocalPath\etc\system\local\inputs.conf"
 
-# Step 1: Copy inputs.conf to Splunk UF config directory
+# Step 1: Read and parse inputs.conf
+$inputsConf = Get-Content ".\inputs.conf"
+
+# Extract monitor stanza
+$monitorLine = $inputsConf | Where-Object { $_ -match '^\[monitor://.+\]$' }
+$logPath = ($monitorLine -replace '^\[monitor://', '') -replace '\]$', ''
+
+# Extract index and sourcetype
+$index = ($inputsConf | Where-Object { $_ -match '^index\s*=' }) -replace 'index\s*=\s*', ''
+$sourcetype = ($inputsConf | Where-Object { $_ -match '^sourcetype\s*=' }) -replace 'sourcetype\s*=\s*', ''
+
+Write-Host "📁 Monitoring Path: $logPath"
+Write-Host "📦 Index: $index"
+Write-Host "🧾 Sourcetype: $sourcetype"
+
+# Step 2: Copy inputs.conf to UF config
 Copy-Item ".\inputs.conf" -Destination $inputsConfPath -Force
 
-# Step 2: Parse log path from inputs.conf
-$inputsConf = Get-Content ".\inputs.conf"
-$logLine = $inputsConf | Where-Object { $_ -match '^\[monitor://(.+)\]' }
-
-if ($logLine -match '^\[monitor://(.+)\]') {
-    $logPath = $matches[1].Trim()
-
-    # Step 3: Ensure the log file exists
-    if (-Not (Test-Path $logPath)) {
-        New-Item -ItemType File -Path $logPath -Force | Out-Null
-        Add-Content -Path $logPath -Value "Log initialized at $(Get-Date)"
-    }
-} else {
-    Write-Error "No valid [monitor://...] stanza found in inputs.conf"
-    exit 1
+# Step 3: Ensure log file exists
+If (-Not (Test-Path $logPath)) {
+    New-Item -ItemType File -Path $logPath -Force | Out-Null
+    Add-Content -Path $logPath -Value "Log initialized at $(Get-Date)"
 }
 
-# Step 4: Restart Splunk UFF
+# Step 4: Restart Splunk UF
 & "$ufLocalPath\bin\splunk.exe" restart
