@@ -11,8 +11,7 @@ if (-Not (Test-Path $logPath)) {
     Write-Host "📝 Creating $logPath..."
     New-Item -ItemType File -Path $logPath -Force | Out-Null
     Add-Content -Path $logPath -Value "Log file initialized at $(Get-Date)"
-}
-else {
+} else {
     Write-Host "✅ Log file already exists: $logPath"
 }
 
