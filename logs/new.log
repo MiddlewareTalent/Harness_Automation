@@ -1,0 +1,10 @@
+2025-06-11 10:05:34,129 INFO  [UserService] User 'ravi.teja' logged in successfully.
+2025-06-11 10:06:12,472 WARN  [PaymentGateway] Delay in response from payment gateway: 305ms
+2025-06-11 10:06:45,381 ERROR [OrderService] Failed to process order #98342 due to NullReferenceException
+2025-06-11 10:07:02,287 DEBUG [AuthModule] Token refreshed for user 'ravi.teja'
+2025-06-11 10:08:19,675 INFO  [NotificationService] Email sent to user 'ravi.teja@middlewaretalents.com'
+2025-06-11 10:09:01,812 INFO  [InventoryService] Stock updated for SKU #AZX-34871: New Qty = 25
+2025-06-11 10:09:45,900 WARN  [APIService] API call took longer than expected: /api/orders, 902ms
+2025-06-11 10:10:23,487 ERROR [DBEngine] Timeout while connecting to database: retrying...
+2025-06-11 10:10:59,199 INFO  [Scheduler] Cleanup job completed. Deleted 152 stale sessions.
+2025-06-11 10:11:31,652 DEBUG [CacheLayer] Cache miss for key: 'user_profile_4928'
